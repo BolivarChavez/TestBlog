@@ -21,5 +21,6 @@ namespace ApiBlog.Models
         public DateTime post_date { get; set; }
         public Int32 post_editor { get; set; }
         public DateTime post_update_date { get; set; }
+        public string author_name { get; set; }
     }
 }

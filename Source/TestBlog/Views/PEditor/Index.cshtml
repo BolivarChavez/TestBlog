@@ -1,0 +1,33 @@
+﻿@model IEnumerable<PostList>
+@{
+    ViewData["Title"] = "Post List";
+}
+
+<form asp-action="InsertPost">
+    <h1>Post List by @ViewData["full_name"]</h1>
+
+    <h1>Previews posts</h1>
+
+    <table>
+        <tbody>
+            @foreach (var b in Model)
+            {
+                <tr>
+                    <td>
+                        <b style="color:brown; font-size:large">@Html.DisplayFor(modelItem => b.post_title)</b>
+                        <br />
+                        @Html.DisplayFor(modelItem => b.user_fullname)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="@Url.Action("Index", "PPublish", new { postid = b.post_id })">View complete post</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Insert new post</button>
+</form>

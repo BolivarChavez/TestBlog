@@ -1,0 +1,68 @@
+﻿@model IEnumerable<PostList>
+@{
+    ViewData["Title"] = "Post List";
+}
+
+<form asp-action="InsertPost">
+    <h1>Post List by @ViewData["full_name"]</h1>
+
+    <h1>Previews posts</h1>
+
+    <table>
+        <tbody>
+            @foreach (var b in Model)
+            {
+                <tr>
+                    <td>
+                        <b style="color:brown; font-size:large">@Html.DisplayFor(modelItem => b.post_title)</b>
+                        <br />
+                        @Html.DisplayFor(modelItem => b.user_fullname)
+                    </td>
+                </tr>
+                <tr>
+                    @if (b.post_status == "A")
+                        {
+                        <td>
+                            Post Status : Approved
+                        </td>
+                        }
+                        else
+                        {
+                        <td>
+                            Post Status : Pending Publish Approval
+                        </td>
+                        }
+                </tr>
+                <tr>
+                    @if (b.post_status == "A")
+                    {
+                    <td>
+                        Publish Date : @Html.DisplayFor(modelItem => b.post_date)
+                    </td>
+                    }
+                    else
+                    {
+                        <td>
+                            Publish Date : -
+                        </td>
+                    }
+                </tr>
+                <tr>
+                    <td>
+                        <a href="@Url.Action("Index", "Post", new { postid = b.post_id })">Read complete post</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="@Url.Action("Index", "PUpdate", new { postid = b.post_id })">Edit post</a>
+                        <br />
+                        <br />
+                    </td>
+                </tr>
+            }
+            </tbody>
+    </table>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Insert new post</button>
+</form>

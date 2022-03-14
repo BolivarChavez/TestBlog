@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiBlog.Models;
+using ApiBlog.Interfaces;
+using ApiBlog.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiBlog
@@ -29,6 +31,10 @@ namespace ApiBlog
         {
             services.AddControllers();
             services.AddDbContext<BlogContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+
+            services.AddTransient<IUser, UserServices>();
+            services.AddTransient<IPost, PostServices>();
+            services.AddTransient<IComment, CommentServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

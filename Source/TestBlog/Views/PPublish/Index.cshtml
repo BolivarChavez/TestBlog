@@ -1,0 +1,45 @@
+﻿@model Post
+<form>
+    <div class="mb-3 row">
+        <label for="PostId" class="col-sm-2 col-form-label">Post Id</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" id="PostId" value="@Html.DisplayFor(modelItem => Model.post_id)" name="PostId">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="exampleFormControlTextarea1" class="col-sm-2 col-form-label">Title</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="1" name="Title" readonly>@Html.DisplayFor(modelItem => Model.post_title)</textarea>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="exampleFormControlTextarea2" class="col-sm-2 col-form-label">Post Text</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" id="exampleFormControlTextarea2" rows="10" name="PostText" readonly>@Html.DisplayFor(modelItem => Model.post_text)</textarea>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="PostId" class="col-sm-2 col-form-label">Post Status</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" id="PostId" value="@ViewData["post_status"]" name="PostStatus">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="PostId" class="col-sm-2 col-form-label">Publish Date</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" id="PostId" value="@Html.DisplayFor(modelItem => Model.post_date)" name="PostDate">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="PostId" class="col-sm-2 col-form-label">Posted by</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" id="PostId" value="@Html.DisplayFor(modelItem => Model.author_name)" name="PostAuthot">
+        </div>
+    </div>
+    <br />
+    <br />
+    <div>
+        <button class="btn btn-primary col-2 me-2" formaction="PublishPost" formmethod="post">Publish Post</button>
+        <button class="btn btn-primary col-2" formaction="DeletePost" formmethod="post">Delete Post</button>
+    </div>
+</form>

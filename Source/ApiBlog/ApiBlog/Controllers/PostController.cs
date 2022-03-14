@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiBlog.Models;
 using Newtonsoft.Json;
+using ApiBlog.Interfaces;
 
 // Controller that manage the insertion, edition, publishing and deletion of posts
 
@@ -15,11 +16,11 @@ namespace ApiBlog.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private BlogContext Context { get; }
+        private IPost Post { get; set; }
 
-        public PostController(BlogContext _context)
+        public PostController(IPost _post)
         {
-            this.Context = _context;
+            this.Post = _post;
         }
 
         //Delete a post 
@@ -28,11 +29,13 @@ namespace ApiBlog.Controllers
         public async Task<string> DeletePost([FromBody] Post PostParam)
         {
             string JSONString = string.Empty;
+            List<string> L_Param = new List<string>();
 
             await Task.Run(() =>
             {
-                List<Output> Outputs = this.Context.DeletePost(PostParam.post_id, PostParam.post_status.Trim()).ToList();
-                JSONString = JsonConvert.SerializeObject(Outputs);
+                L_Param.Add(PostParam.post_id.ToString());
+                L_Param.Add(PostParam.post_status.ToString());
+                JSONString = Post.DeletePost(L_Param);
             });
 
             return JSONString;
@@ -44,11 +47,14 @@ namespace ApiBlog.Controllers
         public async Task<string> EditPost([FromBody] Post PostParam)
         {
             string JSONString = string.Empty;
+            List<string> L_Param = new List<string>();
 
             await Task.Run(() =>
             {
-                List<Output> Outputs = this.Context.EditPost(PostParam.post_id, PostParam.post_title.Trim(), PostParam.post_text.Trim()).ToList();
-                JSONString = JsonConvert.SerializeObject(Outputs);
+                L_Param.Add(PostParam.post_id.ToString());
+                L_Param.Add(PostParam.post_title.ToString());
+                L_Param.Add(PostParam.post_text.ToString());
+                JSONString = Post.EditPost(L_Param);
             });
 
             return JSONString;
@@ -60,11 +66,16 @@ namespace ApiBlog.Controllers
         public async Task<string> InsertPost([FromBody] Post PostParam)
         {
             string JSONString = string.Empty;
+            List<string> L_Param = new List<string>();
 
             await Task.Run(() =>
             {
-                List<Output> Outputs = this.Context.InsertPost(PostParam.post_author_id, PostParam.post_title.Trim(), PostParam.post_text.Trim(), PostParam.post_status.Trim(), PostParam.post_date, PostParam.post_editor).ToList();
-                JSONString = JsonConvert.SerializeObject(Outputs);
+                L_Param.Add(PostParam.post_author_id.ToString());
+                L_Param.Add(PostParam.post_title.ToString());
+                L_Param.Add(PostParam.post_text.ToString());
+                L_Param.Add(PostParam.post_status.ToString());
+                L_Param.Add(PostParam.post_editor.ToString());
+                JSONString = Post.InsertPost(L_Param);
             });
 
             return JSONString;
@@ -76,11 +87,14 @@ namespace ApiBlog.Controllers
         public async Task<string> PublishPost([FromBody] Post PostParam)
         {
             string JSONString = string.Empty;
+            List<string> L_Param = new List<string>();
 
             await Task.Run(() =>
             {
-                List<Output> Outputs = this.Context.PublishPost(PostParam.post_id, PostParam.post_status.Trim(), PostParam.post_date, PostParam.post_editor).ToList();
-                JSONString = JsonConvert.SerializeObject(Outputs);
+                L_Param.Add(PostParam.post_id.ToString());
+                L_Param.Add(PostParam.post_status.ToString());
+                L_Param.Add(PostParam.post_editor.ToString());
+                JSONString = Post.PublishPost(L_Param);
             });
 
             return JSONString;
@@ -92,11 +106,14 @@ namespace ApiBlog.Controllers
         public async Task<string> QueryPostList(Int32 authorid, string status)
         {
             string JSONString = string.Empty;
+            List<string> L_Param = new List<string>();
 
             await Task.Run(() =>
             {
-                List<PostList> PostLists = this.Context.QueryPostList(authorid, status).ToList();
-                JSONString = JsonConvert.SerializeObject(PostLists);
+                L_Param.Add(authorid.ToString());
+                L_Param.Add(status);
+                L_Param.Add("0");
+                JSONString = Post.QueryPost(L_Param);
             });
 
             return JSONString;
@@ -108,11 +125,14 @@ namespace ApiBlog.Controllers
         public async Task<string> QueryPost(Int32 postid)
         {
             string JSONString = string.Empty;
+            List<string> L_Param = new List<string>();
 
             await Task.Run(() =>
             {
-                List<Post> Posts = this.Context.QueryPostSingle(postid).ToList();
-                JSONString = JsonConvert.SerializeObject(Posts);
+                L_Param.Add("0");
+                L_Param.Add("");
+                L_Param.Add(postid.ToString());
+                JSONString = Post.QueryPost(L_Param);
             });
 
             return JSONString;

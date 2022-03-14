@@ -1,0 +1,56 @@
+﻿@model ViewPost
+@{
+    ViewData["Title"] = "Complete Post";
+}
+@{ var e = Model.Posts.First();}
+
+<form asp-action="SaveComment">
+    <h1>@Html.DisplayFor(modelItem => e.post_title)</h1>
+    <p>
+        @Html.DisplayFor(modelItem => e.post_text)
+    </p>
+    <p>
+        Publish Date : @Html.DisplayFor(modelItem => e.post_date)
+    </p>
+    <p>
+        Posted by : @Html.DisplayFor(modelItem => e.author_name)
+    </p>
+
+    <h1>Post Comments</h1>
+    <br />
+    <table>
+        <tbody>
+            @foreach (var b in Model.Comments)
+            {
+                <tr>
+                    <td>
+                        <p>
+                            @Html.DisplayFor(modelItem => b.comment_text)
+                        </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Posted by @Html.DisplayFor(modelItem => b.comment_author)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Posted date @Html.DisplayFor(modelItem => b.comment_date)
+                        <br />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="mb-3 row">
+        <label for="exampleFormControlTextarea2" class="col-sm-2 col-form-label">Comment Text</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" id="exampleFormControlTextarea2" rows="10" name="CommentText" required></textarea>
+        </div>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Save Comment</button>
+</form>

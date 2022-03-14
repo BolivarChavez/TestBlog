@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiBlog.Models;
 using Newtonsoft.Json;
+using ApiBlog.Interfaces;
 
 // Controller that manage insert and query operations for post comments
 
@@ -15,11 +16,11 @@ namespace ApiBlog.Controllers
     [ApiController]
     public class CommentController : ControllerBase
     {
-        private BlogContext Context { get; }
+        private IComment Comment { get; set; }
 
-        public CommentController(BlogContext _context)
+        public CommentController(IComment _comment)
         {
-            this.Context = _context;
+            this.Comment = _comment;
         }
 
         //Insert a comment for a selected post
@@ -28,11 +29,14 @@ namespace ApiBlog.Controllers
         public async Task<string> InsertComment([FromBody] Comment CommentParam)
         {
             string JSONString = string.Empty;
+            List<string> L_Param = new List<string>();
 
             await Task.Run(() =>
             {
-                List<Output> Outputs = this.Context.InsertComment(CommentParam.comment_post_id, CommentParam.comment_text.Trim(), CommentParam.comment_author.Trim()).ToList();
-                JSONString = JsonConvert.SerializeObject(Outputs);
+                L_Param.Add(CommentParam.comment_post_id.ToString());
+                L_Param.Add(CommentParam.comment_text.ToString());
+                L_Param.Add(CommentParam.comment_author.ToString());
+                JSONString = Comment.InsertComment(L_Param);
             });
 
             return JSONString;
@@ -44,11 +48,12 @@ namespace ApiBlog.Controllers
         public async Task<string> QueryComment(Int32 postid)
         {
             string JSONString = string.Empty;
+            List<string> L_Param = new List<string>();
 
             await Task.Run(() =>
             {
-                List<Comment> Comments = this.Context.QueryCommentList(postid).ToList();
-                JSONString = JsonConvert.SerializeObject(Comments);
+                L_Param.Add(postid.ToString());
+                JSONString = Comment.QueryCommentList(L_Param);
             });
 
             return JSONString;

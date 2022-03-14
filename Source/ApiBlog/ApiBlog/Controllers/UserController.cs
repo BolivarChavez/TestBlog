@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiBlog.Interfaces;
 using ApiBlog.Models;
-using Newtonsoft.Json;
 
 //Controller that manage the operations of sign in and insertion of a new user
 namespace ApiBlog.Controllers
@@ -14,11 +14,11 @@ namespace ApiBlog.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private BlogContext Context { get; }
+        private IUser Luser { get; set; }
 
-        public UserController(BlogContext _context)
+        public UserController(IUser _user)
         {
-            this.Context = _context;
+            this.Luser = _user;
         }
 
         //Performs the signin in for a user 
@@ -27,11 +27,13 @@ namespace ApiBlog.Controllers
         public async Task<string> LoginUser([FromBody] User UserParms)
         {
             string JSONString = string.Empty;
-
+            List<string> L_Param = new List<string>();
+            
             await Task.Run(() =>
             {
-                List<User> Users = this.Context.LoginUser(UserParms.user_name.Trim(), UserParms.user_password.Trim()).ToList();
-                JSONString = JsonConvert.SerializeObject(Users);
+                L_Param.Add(UserParms.user_name.Trim());
+                L_Param.Add(UserParms.user_password.Trim());
+                JSONString = Luser.LoginUser(L_Param);
             });
 
             return JSONString;
@@ -43,11 +45,16 @@ namespace ApiBlog.Controllers
         public async Task<string> InsertUser([FromBody] User UserParms)
         {
             string JSONString = string.Empty;
+            List<string> L_Param = new List<string>();
 
             await Task.Run(() =>
             {
-                List<Output> Outputs = this.Context.InsertUser(UserParms.user_name.Trim(), UserParms.user_fullname.Trim(), UserParms.user_password.Trim(), UserParms.user_type.Trim(), UserParms.user_status.Trim()).ToList();
-                JSONString = JsonConvert.SerializeObject(Outputs);
+                L_Param.Add(UserParms.user_name.Trim());
+                L_Param.Add(UserParms.user_fullname.Trim());
+                L_Param.Add(UserParms.user_password.Trim());
+                L_Param.Add(UserParms.user_type.Trim());
+                L_Param.Add(UserParms.user_status.Trim());
+                JSONString = Luser.InsertUser(L_Param);
             });
 
             return JSONString;
